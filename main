@@ -47,5 +47,5 @@ class Dino{
       this.dyv = 0;  //dino's y velocity
 
       this.is_flying = this.dy < this.world.floor_pos; 
-
-    }
+}
+    
