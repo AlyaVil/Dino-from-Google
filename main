@@ -147,3 +147,55 @@ class Obstacle{
     return this.y;
   }
 }
+function preload(){
+    soundFormats('mp3', 'ogg');
+    overSound = loadSound('over.mp3');
+}
+
+let obs_g = 0;
+
+function setup() {
+  createCanvas(500, 400);
+  // frameRate(25);
+  world = new World();
+  dino = new Dino(world);
+  textSize(24);
+}
+
+function draw() {
+
+  if (!caught){
+    caught = obstacles.some((ob)=>{return dino.check_collision(ob);});
+    over_an_obstacle = obstacles.some((ob)=>{return dino.over_an_obstacle(ob);});
+    if (over_an_obstacle & !over_an_obstacle_swithc){
+      over_an_obstacle_swithc = true;
+      score ++;
+      overSound.play();
+      sp = Math.floor(score / 10) * 2 + 8;
+    }
+    
+    if (!over_an_obstacle){
+      over_an_obstacle_swithc = false;
+      
+    }
+
+    world.draw(); 
+    fill(0);
+    noStroke(); 
+    text(score, 30, 30);
+    dino.draw();
+
+    obstaclesGenerator();
+    for(obstacle of obstacles){
+      obstacle.draw();
+    }
+    obstaclesDestroyer();
+  }
+  else{
+    caught = false;
+    score = 0;
+    obstacles = []
+    dino.caught();
+  }
+  
+}
